@@ -1,0 +1,53 @@
+# 机械臂固定姿态。pose0 由已验证移动抓取程序根据实际反馈在运行时生成。
+ready_pose:
+  x: 0.3
+  y: 0.0
+  z: 0.25
+  roll: 0.0
+  pitch: 0.55
+  yaw: 0.0
+  duration_sec: 3.0
+
+scan_pose0:
+  joint1_offset_rad: -1.5708
+  duration_sec: 3.0
+  joint1_speed_limit_rad_s: 1.0
+
+# 初始 scan_pose0 中心帧没有可用目标时使用的 D435 补偿视角。
+# 每个偏移均相对 scan_pose0 完成后的同一个中心关节目标，而非前一视角。
+d435_recovery_scan:
+  views:
+    - {joint1_offset_rad: 0.0,       joint5_offset_rad: -0.174533}
+    - {joint1_offset_rad: 0.0,       joint5_offset_rad:  0.174533}
+    - {joint1_offset_rad: -0.174533, joint5_offset_rad: -0.174533}
+    - {joint1_offset_rad: -0.174533, joint5_offset_rad:  0.174533}
+    - {joint1_offset_rad: 0.174533,  joint5_offset_rad: -0.174533}
+    - {joint1_offset_rad: 0.174533,  joint5_offset_rad:  0.174533}
+  duration_sec: 1.0
+  joint_speed_limit_rad_s: 1.0
+  settle_sec: 0.5
+  joint_limit_margin_rad: 0.05
+  # 每个补偿视角必须确认 J1/J5 实际到位；最多重发一次。
+  joint_feedback_tolerance_rad: 0.10
+  feedback_timeout_sec: 2.0
+  feedback_retry_count: 1
+
+transport_pose:
+  # J4 使用抓取完成后实测的保持角度 -93.340054 deg（-1.629091 rad）。
+  # 其余关节与既有运输保持姿态一致。
+  joint_positions_rad: [0.0, 0.0, 0.0, -1.629091, 0.0, 0.0]
+  duration_sec: 3.0
+
+pre_drop_pose:
+  # 此末端位姿和 2 秒轨迹时长均来自已完成真机验证的投放程序。
+  x: -0.01349
+  y: -0.68474
+  z: 0.34736
+  roll: 0.08310
+  pitch: 0.07800
+  yaw: -1.58463
+  duration: 2.0
+  # 仅作为 IK 初始猜测，不是直接下发的关节位置。它避免从 transport_pose
+  # 的全零关节状态求解时落入局部极值；控制器仍从实时反馈位置生成 Cartesian 轨迹。
+  ik_seed_joint_positions_rad:
+    [-1.592464, -2.203602, -2.053700, -0.071893, -0.007811, 0.082589]

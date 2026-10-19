@@ -1,0 +1,17 @@
+# DM-B601 与已经真机验证的 mobile_2d_grasp 夹爪控制参数。
+robot:
+  repo_root: third_party/reBotArm_control_py
+  grasp_repo_root: third_party/reBot-DevArm-Grasp
+  gripper:
+    dm:
+      angle_open: 5.2
+      counterclockwise: true
+      tau_max: 1.0
+      close_torque: 0.75
+      default_force: 0.215
+
+arm_motion:
+  pregrasp_duration_sec: 2.0
+  grasp_duration_sec: 1.5
+  retreat_duration_sec: 1.5
+  default_motion_timeout_sec: 8.0

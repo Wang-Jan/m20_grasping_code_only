@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="zh-CN">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>M20 巡检验证台</title>
+<style>
+:root{color-scheme:dark;font-family:system-ui,sans-serif;background:#101722;color:#e4ecf5}body{max-width:1400px;margin:auto;padding:24px}h1{font-size:26px;margin:0}p,small{color:#a9bacd}section,article{background:#192435;padding:18px;border-radius:12px;margin-top:18px}.row{display:flex;gap:12px;align-items:center;flex-wrap:wrap}.videos{display:grid;grid-template-columns:1fr 1fr;gap:18px}input,select,button{padding:10px;border-radius:6px;border:1px solid #506078;background:#111b29;color:inherit;font-size:15px}button{cursor:pointer;background:#22569a}button:disabled{opacity:.45;cursor:default}#stop{background:#9c363e}canvas{display:block;width:100%;background:#080d14;aspect-ratio:16/9;margin:12px 0}pre{white-space:pre-wrap;overflow-wrap:anywhere;max-height:260px;overflow:auto;font-size:13px}#state{font-size:22px;color:#74dbb1}#notice{color:#ffcc8b}label{display:flex;align-items:center;gap:8px}@media(max-width:760px){.videos{grid-template-columns:1fr}body{padding:12px}}
+</style>
+<header><h1>M20 巡检验证台</h1><p>双路视频 · 巡检控制 · 实时状态</p></header>
+<section>
+<div class="row"><label>服务地址 <input id="address" value="ws://192.168.126.176:8765" size="29"></label><button id="connect">连接</button><button id="disconnect">断开</button><span id="connection">未连接</span></div>
+<p>连接后仅查看状态与视频；点击“启动巡检”会执行真实任务。断开页面不会停止任务。</p>
+<div class="row"><label>路线 <select id="route"><option>route1</option><option>route2</option><option>route3</option><option>route4</option></select></label><label>循环次数 <input id="loops" type="number" min="1" step="1" value="1" style="width:70px"></label><button id="start" disabled>启动巡检</button><button id="status" disabled>查询状态</button><button id="stop" disabled>停止巡检</button></div>
+<p id="notice" role="status">请先连接服务。</p>
+</section>
+<div class="videos">
+<article><strong>前摄像头</strong><canvas id="front" width="1280" height="720"></canvas><small id="frontInfo">未连接</small></article>
+<article><strong>后摄像头</strong><canvas id="back" width="1280" height="720"></canvas><small id="backInfo">未连接</small></article>
+</div>
+<section><div class="row"><strong id="state">状态未知</strong><span id="task"></span></div><p id="message">等待状态快照</p><p id="failure"></p><pre id="logs"></pre></section>
+<section><strong>请求与响应</strong><pre id="events"></pre></section>
+<script src="app.js"></script>
+</html>

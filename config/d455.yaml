@@ -1,0 +1,51 @@
+# D455 前向目标定位配置。与 D435 的机械臂视觉配置保持独立。
+camera:
+  serial: "239222300444"  # 已通过本机 RealSense SDK 枚举确认为 D455
+  # 相机正前方、下俯约45度；输出先转换为镜头相对的 x 向前、y 向左坐标。
+  color_width: 640
+  color_height: 480
+  depth_width: 640
+  depth_height: 480
+  fps: 30
+  # RealSense frame wait per warm-up/detection frame. This is separate from
+  # navigation timeouts and does not hide a persistent USB disconnect.
+  frame_timeout_sec: 15.0
+
+detection:
+  model_name: yoloe-26l-seg.pt
+  device: "0"
+  confidence_threshold: 0.25
+  iou_threshold: 0.45
+  inference_size: 640
+  custom_classes:
+    - "water bottle"
+    - "bottle"
+
+target:
+  # 以下深度为相机光轴距离，仅用于有效深度过滤。
+  min_depth_m: 0.20
+  max_depth_m: 8.0
+  pitch_down_deg: 45.0
+  depth_patch_radius_px: 2
+  min_valid_depth_samples: 3
+  safe_stop_distance_m: 0.15
+  # 只有掩码接触点距 D455 彩色镜头的三维距离不超过此值才触发接近。
+  # 这不是相机光轴深度，也不是机器狗地图平面距离。
+  approach_trigger_max_range_m: 1.25
+  # AOS 的 Type=1003 可能直到导航完成才返回终态响应。与已验证的巡航
+  # CLI 保持一致，901 和 902 每段均允许最多 300 秒，超时后仍会取消导航并原地趴下。
+  max_navigation_sec: 300.0
+
+# 以下参数来自已在真机验证的 m20_cli.py 接近流程。
+navigation:
+  # D455 镜头中心到机器狗 base_link 的平移；当前已验证默认值为零。
+  base_link_offset_x_m: 0.0
+  base_link_offset_y_m: 0.0
+  # 第一段停靠完成后，沿机器狗当前朝向前方的坐标导航距离；不是强制前进步态。
+  pre_lie_forward_m: 0.10
+  perpendicular_side: left
+  approach_point_id: 901
+  gait: 0x3002
+  speed: 1
+  obs_mode: 0
+  nav_mode: 0

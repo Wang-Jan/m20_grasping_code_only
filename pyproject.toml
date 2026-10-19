@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "m20-rebot-moving-grasp"
+version = "0.1.0"
+description = "M20 Pro 与 DM-B601 联合移动抓取项目"
+requires-python = ">=3.10"
+dependencies = ["PyYAML>=5.4"]
+
+[project.scripts]
+m20-rebot-moving-grasp = "m20_rebot_moving_grasp.main:main"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]

@@ -1,0 +1,17 @@
+[Unit]
+Description=M20 LAN inspection control and dual camera WebSocket service
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=g
+WorkingDirectory=/home/g/m20_rebot_moving_grasp
+Environment=PYTHONPATH=/home/g/m20_rebot_moving_grasp/src
+ExecStart=/home/g/m20_rebot_moving_grasp/.venv/bin/python -m m20_rebot_moving_grasp.remote_service
+Restart=always
+RestartSec=5
+KillSignal=SIGINT
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,37 @@
+# 联合任务的系统级配置。M20 内部 IP 不应修改。
+project:
+  name: m20_rebot_moving_grasp
+  log_level: INFO
+
+network:
+  subnet: 10.21.31.0/24
+  router_management_ip: 10.21.31.1
+  orin_ip: 10.21.31.50
+
+m20:
+  aos_ip: 10.21.31.103
+  gos_ip: 10.21.31.104
+  nos_ip: 10.21.31.106
+  basic_server_tcp_port: 30001
+  # AOS Type=1003 can respond only after a coordinate navigation finishes.
+  # Keep this aligned with the verified m20_cli.py invocation.
+  nav_timeout_sec: 60
+  udp_port: 30000
+  # 已验证定点扫描 Demo 的专用点位文件，不与巡航共用。
+  points_file: config/m20/demo_points.json
+  # 仅供默认自动化抓取闭环 Demo 使用；填写后才允许启动该模式。
+  scan_point_name: scan_point
+  bin_point_name: bin_point
+  home_point_name: start
+  # 普通 AOS 状态/姿态命令确认；单点导航使用独立的 nav_timeout_sec。
+  command_timeout_sec: 10
+  # 取消请求确认与导航状态回读的总等待窗口。
+  cancel_confirm_timeout_sec: 15
+
+task:
+  detect_timeout_sec: 15
+  clean_scan_continuous_no_target_sec: 10
+  max_grasp_attempts: 2
+  # 巡航中 D455 检测已进入 D435 六视角补偿但仍漏检时，离开本次检测位置
+  # 该距离后才允许再次触发，避免返回 902 后原地重复接近同一目标。
+  d435_miss_suppression_radius_m: 0.75

@@ -1,0 +1,43 @@
+# D435 眼在手二维 OBB/RGB-D 抓取配置；不使用 GraspNet。
+camera:
+  type: realsense_d435cb
+  serial: "233522074971"
+  color_width: 640
+  color_height: 480
+  depth_width: 640
+  depth_height: 480
+  fps: 30
+
+calibration:
+  # 以下标定板参数与 mobile_grasp.yaml 保持一致，供后续标定/校验工具使用
+  aruco:
+    marker_length_m: 0.149
+    dict_id: 16
+    target_marker_id: 555
+  hand_eye_method: TSAI
+  hand_eye_path: config/calibration/realsense_d435cb/hand_eye.npz
+  hand_eye_mode: eye_in_hand
+  hand_eye_compensation_m:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+
+detection:
+  model_name: yoloe-26l-seg.pt
+  device: "0"
+  # 与已真机验证的 third_party/reBot-DevArm-Grasp/config/mobile_grasp.yaml 一致
+  confidence_threshold: 0.25
+  iou_threshold: 0.45
+  infer_every_live: 3
+  target_class: null
+  custom_classes:
+    - "water bottle"
+    - "bottle"
+
+grasp_2d:
+  depth_quantile: 0.2
+  pregrasp_offset_m: 0.080
+  # 原始流程未单独定义撤离位；复用已验证的 pregrasp 位，抓取后沿同一工具轴退回 8cm。
+  retreat_offset_m: 0.080
+  insertion_depth_m: 0.063
+  min_base_z_m: -0.25

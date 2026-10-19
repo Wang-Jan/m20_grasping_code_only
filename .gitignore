@@ -1,0 +1,60 @@
+__pycache__/
+*.py[cod]
+.venv/
+src/*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.coverage
+logs/
+data/
+runs/
+config/calibration/
+tests/output/
+
+# ---------------------------------------------------------------------------
+# Large / local runtime assets: intentionally NOT in the public repo.
+# Whole directories are ignored, but small docs/config files stay trackable
+# via the negations, so a models/README.md or models/manifest.json still works.
+# ---------------------------------------------------------------------------
+models/*
+!models/.gitkeep
+!models/*.md
+!models/*.yaml
+!models/*.yml
+!models/*.json
+
+weights/*
+!weights/.gitkeep
+!weights/*.md
+!weights/*.yaml
+!weights/*.yml
+!weights/*.json
+
+wheelhouse/*
+!wheelhouse/.gitkeep
+!wheelhouse/*.md
+
+# Model weights / serialized graph formats, anywhere in the tree
+# (YOLO .pt, ONNX, TensorRT .engine/.trt/.plan, TF .pb, ...).
+# NOTE: TorchScript is also ".ts"; we deliberately do NOT ignore *.ts globally
+# because that would silently hide TypeScript sources. weights/ is ignored above.
+*.pt
+*.pth
+*.ckpt
+*.onnx
+*.engine
+*.trt
+*.plan
+*.safetensors
+*.h5
+*.tflite
+*.mlmodel
+*.mlpackage
+*.pb
+
+# Downloaded Python wheels and archives.
+*.whl
+*.tar.gz
+
+# Copied client virtual environment
+.venv-client/

@@ -1,0 +1,22 @@
+# JetPack 6.2 (R36.4.3), Python 3.10, aarch64 runtime dependencies.
+# Install the pinned Jetson ARM64 torch/torchvision wheels through
+# scripts/install_jetson_dependencies.sh. They are intentionally not resolved
+# from the generic PyPI index.
+# Current wheelhouse versions: torch 2.8.0, torchvision 0.23.0.
+numpy==2.2.6
+opencv-python==4.12.0.88
+PyYAML==6.0.2
+pin==4.1.0
+# These ARM64 runtime wheels provide libraries absent from the JetPack image
+# when needed by the selected Jetson torch build; they are not generic torch.
+nvidia-nccl-cu12==2.29.3
+nvidia-nvshmem-cu12==3.4.5
+motorbridge==0.5.1
+pyrealsense2==2.58.3.10794
+nvidia-ml-py>=12.0.0
+# YOLOE 的开放词汇 set_classes() 需要 ``import clip``；使用 PyPI 的 ARM64 无关纯 Python 包。
+openai-clip==1.0.1
+# YOLOE MobileCLIP TorchScript weight is a model asset, not a Python package;
+# scripts/install_jetson_dependencies.sh downloads it to weights/mobileclip2_b.ts.
+# Ultralytics is installed separately by the Jetson installer with --no-deps.
+# This prevents its loose torch requirement from resolving to a generic PyPI wheel.
